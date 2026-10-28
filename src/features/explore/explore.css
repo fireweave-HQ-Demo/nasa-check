@@ -1,0 +1,27 @@
+.explore__search {
+  display: grid;
+  gap: var(--space-3);
+}
+.explore__form {
+  display: flex;
+  gap: var(--space-2);
+}
+.explore__input {
+  flex: 1;
+  min-width: 0;
+  min-height: 46px;
+  font-size: var(--text-base);
+}
+.explore__chips {
+  gap: var(--space-2);
+}
+.explore__chip {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  font-weight: 500;
+  color: var(--text-muted);
+}
+.explore__chip[aria-pressed='true'] {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
