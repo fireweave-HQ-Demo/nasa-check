@@ -1,13 +1,13 @@
-# Setup: NASA key, OpenObserve and Vercel
+# Setup: NASA key, Docker and OpenObserve
 
 ## 1. NASA API key
 
 1. Sign up at <https://api.nasa.gov> (free, instant).
-2. Put the key in `.env.local`:
+2. Put the key in `.env.local` (for `npm run dev`) and `.env.docker` (for Docker):
    ```
    VITE_NASA_API_KEY=your-key
    ```
-3. `.env.local` is gitignored; never commit keys. On Vercel, add it as an environment variable.
+3. Both files are gitignored; never commit keys.
 
 Without a key the app uses NASA's shared `DEMO_KEY`, which is limited to roughly 30 requests per
 hour per IP, and shows a notice in development.
@@ -19,7 +19,7 @@ hour per IP, and shows a notice in development.
 
 1. Sign in to OpenObserve Cloud and pick the organization for this demo.
 2. Go to **Ingestion → Real User Monitoring (RUM)** and create a RUM token / application.
-3. Copy the values it shows into `.env.local` (and Vercel):
+3. Copy the values it shows into `.env.local` (as `VITE_OO_*`) or `.env.docker` (as `OO_*`):
    ```
    VITE_OO_SITE=api.openobserve.ai
    VITE_OO_ORG=<organization identifier>
@@ -38,17 +38,17 @@ hour per IP, and shows a notice in development.
 If the RUM requests are blocked (ad blockers often block RUM endpoints), the app keeps working;
 telemetry is simply lost for that browser.
 
-## 3. Vercel
+## 3. Docker (local deployment)
 
-1. **Add New → Project**, import `fireweave-HQ-Demo/nasa`.
-2. Framework preset: Vite (already set in `vercel.json`).
-3. Environment variables:
-
-   | Name                | Production         | Preview            |
-   | ------------------- | ------------------ | ------------------ |
-   | `VITE_NASA_API_KEY` | your key           | your key           |
-   | `VITE_OO_*`         | OpenObserve values | OpenObserve values |
-   | `VITE_APP_ENV`      | `production`       | `preview`          |
-
-4. Deploy. Check that deep links such as `/today/2024-01-01` and `/explore?q=mars` load
-   directly (handled by the rewrite in `vercel.json`).
+1. Install Docker Desktop (or OrbStack) and start it. Check with `docker version`.
+2. Create the runtime config:
+   ```bash
+   cp .env.docker.example .env.docker
+   # set NASA_API_KEY=your-key
+   ```
+3. Build and start: `npm run docker:up`, then open <http://localhost:8080>.
+4. Check:
+   - `docker compose ps` shows the container as `healthy`.
+   - <http://localhost:8080/config.js> shows your values.
+   - Deep links such as <http://localhost:8080/today/1998-07-06> load directly.
+5. Changed a key? `docker compose up -d` (restart, no rebuild). Changed the code? `npm run docker:up`.

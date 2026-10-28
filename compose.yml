@@ -1,0 +1,16 @@
+# Local Docker deployment: http://localhost:8080
+#   cp .env.docker.example .env.docker   (add your keys)
+#   docker compose up --build -d
+services:
+  web:
+    build: .
+    image: nasa-explorer:local
+    container_name: nasa-explorer
+    ports:
+      - '8080:80'
+    env_file:
+      - path: .env.docker
+        required: false
+    environment:
+      APP_ENV: ${APP_ENV:-production}
+    restart: unless-stopped

@@ -36,8 +36,10 @@ No network or keys? `npm run dev:mock` runs the whole app on generated sample da
 
 ## Configuration
 
-All configuration is build-time `VITE_*` variables, read in `src/lib/config.ts`. They are
-embedded in the browser bundle, so only browser-safe values belong here.
+For `npm run dev`, configuration comes from build-time `VITE_*` variables in `.env.local`, read in
+`src/lib/config.ts`. In Docker the same settings come from runtime env vars instead (see
+[Run with Docker](#run-with-docker)). Either way they reach the browser, so only browser-safe values
+belong here.
 
 | Variable               | Required | Notes                                                                                                                    |
 | ---------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------ |
@@ -110,12 +112,33 @@ Every event also carries `release=r1`, `app_version`, `env`, and the device id a
 Session replay masks text typed into inputs. Dashboard queries:
 [observability/dashboards](observability/dashboards/README.md).
 
-## Deploy (Vercel)
+## Run with Docker
 
-1. Import the repo into Vercel (framework: Vite; `vercel.json` sets the build and SPA rewrites).
-2. Add the `VITE_*` variables under **Settings → Environment Variables** (set
-   `VITE_APP_ENV=preview` for Preview and `production` for Production).
-3. Every PR gets a preview URL; merging to `main` deploys production.
+The app ships as a small nginx image. Keys are **not** baked in at build time: when the container
+starts, `docker/40-runtime-config.sh` writes `/config.js` from an allowlist of environment
+variables, and the app reads it before falling back to build-time `VITE_*` values. One image works
+with any keys; changing a key only needs a restart.
+
+```bash
+cp .env.docker.example .env.docker   # add NASA_API_KEY
+npm run docker:up                    # build + start → http://localhost:8080
+npm run docker:logs                  # follow logs
+npm run docker:down                  # stop
+```
+
+| Variable (`.env.docker`)                            | Notes                                               |
+| --------------------------------------------------- | --------------------------------------------------- |
+| `NASA_API_KEY`                                      | Personal NASA key; falls back to `DEMO_KEY`.        |
+| `APP_ENV`                                           | `production` (default), `preview` or `development`. |
+| `FIREWEAVE_BROWSER_KEY`                             | Release 2. Public `fw_public_…` key.                |
+| `OO_SITE`, `OO_ORG`, `OO_APP_ID`, `OO_CLIENT_TOKEN` | Later: OpenObserve RUM.                             |
+
+Everything in `.env.docker` is served to browsers in `/config.js`, so only public keys belong
+there. The script ignores values with unexpected characters.
+
+The nginx config (`docker/nginx.conf`) serves deep links such as `/today/1998-07-06` with the app
+shell, caches hashed assets for a year, never caches `index.html` or `config.js`, and answers
+`/healthz` for the container health check.
 
 ## Credits
 

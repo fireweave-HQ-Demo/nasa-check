@@ -32,4 +32,25 @@ describe('readConfig', () => {
       clientToken: 'tok',
     });
   });
+
+  it('prefers runtime config (/config.js) over build-time values', () => {
+    const c = readConfig(
+      { VITE_NASA_API_KEY: 'build-key', VITE_APP_ENV: 'development', VITE_OO_ORG: 'org' },
+      '1.0.0',
+      {
+        NASA_API_KEY: 'runtime-key',
+        APP_ENV: 'production',
+        OO_APP_ID: 'app',
+        OO_CLIENT_TOKEN: 'tok',
+      },
+    );
+    expect(c.nasaApiKey).toBe('runtime-key');
+    expect(c.env).toBe('production');
+    expect(c.observability).toMatchObject({ organizationIdentifier: 'org', applicationId: 'app' });
+  });
+
+  it('ignores empty runtime values', () => {
+    const c = readConfig({ VITE_NASA_API_KEY: 'build-key' }, '1.0.0', { NASA_API_KEY: '  ' });
+    expect(c.nasaApiKey).toBe('build-key');
+  });
 });

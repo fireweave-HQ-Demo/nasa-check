@@ -1,0 +1,14 @@
+node_modules
+dist
+coverage
+.git
+.qa
+.env
+.env.*
+!.env.example
+!.env.docker.example
+*.local
+*.log
+.DS_Store
+Dockerfile
+compose.yml
