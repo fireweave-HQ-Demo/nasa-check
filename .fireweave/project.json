@@ -1,0 +1,30 @@
+{
+  "defaultEnvironment": "production",
+  "orgId": "EfJePncMeGxVl8rFh9tfHqkdEZhMM4yL",
+  "projectId": "3d75ee9b-c81a-439a-aef8-f7a41352e593",
+  "projectName": "arcade",
+  "rolloutReady": {
+    "attestUrl": "https://dorine-incorporative-nonopinionatively.ngrok-free.dev"
+  },
+  "server": {
+    "url": "https://dorine-incorporative-nonopinionatively.ngrok-free.dev"
+  },
+  "surfaces": [
+    {
+      "entrypoint": "src/main.tsx",
+      "harnessKind": "package",
+      "path": ".",
+      "rolloutCredentialEnv": "FIREWEAVE_BROWSER_KEY",
+      "startProfile": "client",
+      "surface": "web",
+      "surfaceId": "sfc_01M616CZW6KYND43GS6SHJTJNM",
+      "trackerPath": ".fireweave/stamps.ts",
+      "sdk": {
+        "name": "@fireweaveai/web-sdk",
+        "version": "3.0.0-dev.20261028123334.248ef24",
+        "channel": "dev"
+      }
+    }
+  ],
+  "version": 2
+}

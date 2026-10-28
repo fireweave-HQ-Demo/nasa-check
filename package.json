@@ -21,6 +21,7 @@
     "docker:logs": "docker compose logs -f web"
   },
   "dependencies": {
+    "@fireweaveai/web-sdk": "^3.0.0-dev.20261028123334.248ef24",
     "@openobserve/browser-logs": "0.4.3",
     "@openobserve/browser-rum": "0.4.3",
     "@tanstack/react-query": "^5.105.0",

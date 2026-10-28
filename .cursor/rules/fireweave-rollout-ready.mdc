@@ -1,0 +1,8 @@
+---
+description: FireWeave rollout contract (in AGENTS.md)
+alwaysApply: true
+---
+
+<!-- fireweave:begin role=cursor-entry format=1 sha256=6439ae516a4775a09ab778cb0bcd8c06b8aed2debb4d5a955b102d5ae571f23a -->
+FireWeave's rollout contract is in the repository-root `AGENTS.md`. Read it before you change behaviour, and follow its HARD ORDER: manifest, control point, signals, check, then a pull request.
+<!-- fireweave:end role=cursor-entry -->

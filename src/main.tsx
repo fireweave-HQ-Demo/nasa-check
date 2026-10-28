@@ -1,3 +1,4 @@
+import { ready } from './fireweave/start'; // FireWeave: must stay the first import
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App } from '@/app/App';
@@ -19,6 +20,8 @@ async function bootstrap() {
   void initObservability(config);
   startApiTiming();
   initIdentity();
+
+  await ready;
 
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
